@@ -352,10 +352,10 @@ export default function QualiopiDashboard({ organizationId }: QualiopiDashboardP
             </CardHeader>
             <CardContent className="space-y-4">
               {Object.values(QUALIOPI_INDICATORS).slice(0, 5).map((ind) => (
-                <div key={ind.number} className="flex items-start gap-3 p-3 border rounded-lg">
+                <div key={ind.id} className="flex items-start gap-3 p-3 border rounded-lg">
                   <CheckCircle size={20} className="text-green-600 mt-0.5" />
                   <div className="flex-1">
-                    <p className="font-medium text-sm">{ind.label}</p>
+                    <p className="font-medium text-sm">{ind.title}</p>
                     <p className="text-xs text-muted-foreground mt-1">{ind.description}</p>
                   </div>
                 </div>

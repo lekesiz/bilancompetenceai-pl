@@ -1,44 +1,50 @@
 import { QualiopiIndicator, Bilan, Session } from './types'
 
-export const QUALIOPI_INDICATORS: Record<number, Omit<QualiopiIndicator, 'status' | 'evidence' | 'lastAuditDate'>> = {
+interface QualiopiIndicatorTemplate {
+  id: number
+  title: string
+  description: string
+}
+
+export const QUALIOPI_INDICATORS: Record<number, QualiopiIndicatorTemplate> = {
   1: {
-    number: 1,
-    label: 'Information du public sur les prestations',
+    id: 1,
+    title: 'Information du public sur les prestations',
     description: 'Les prestations proposées par le prestataire, les délais pour y accéder, les résultats obtenus et les modalités de recours sont communiqués au public'
   },
   2: {
-    number: 2,
-    label: 'Indicateurs de résultats',
+    id: 2,
+    title: 'Indicateurs de résultats',
     description: 'Les indicateurs de résultats des prestations du prestataire sont rendus publics'
   },
   3: {
-    number: 3,
-    label: 'Obtention de la certification',
+    id: 3,
+    title: 'Obtention de la certification',
     description: 'Information adaptée pour favoriser l\'insertion professionnelle des publics accueillis'
   },
   11: {
-    number: 11,
-    label: 'Évaluation des acquis et de la satisfaction',
+    id: 11,
+    title: 'Évaluation des acquis et de la satisfaction',
     description: 'Les prestations délivrées sont évaluées et la satisfaction des bénéficiaires est mesurée'
   },
   22: {
-    number: 22,
-    label: 'Traçabilité des actions',
+    id: 22,
+    title: 'Traçabilité des actions',
     description: 'Le prestataire assure la traçabilité de ses prestations et met en place une veille sur les évolutions réglementaires'
   },
   23: {
-    number: 23,
-    label: 'Mesure de la satisfaction',
+    id: 23,
+    title: 'Mesure de la satisfaction',
     description: 'Le prestataire recueille les appréciations des bénéficiaires sur les prestations'
   },
   24: {
-    number: 24,
-    label: 'Amélioration continue',
+    id: 24,
+    title: 'Amélioration continue',
     description: 'Le prestataire met en œuvre une démarche d\'amélioration continue de ses prestations'
   },
   25: {
-    number: 25,
-    label: 'Analyse des retours',
+    id: 25,
+    title: 'Analyse des retours',
     description: 'Le prestataire analyse les retours des bénéficiaires et des parties prenantes'
   }
 }
@@ -52,50 +58,51 @@ export function evaluateBilanCompliance(
   const indicators: QualiopiIndicator[] = []
   
   indicators.push({
-    number: 1,
-    label: QUALIOPI_INDICATORS[1].label,
+    id: 1,
+    title: QUALIOPI_INDICATORS[1].title,
     description: QUALIOPI_INDICATORS[1].description,
-    status: bilan.objectives.length > 0 && bilan.contractSigned ? 'compliant' : 'non_compliant',
+    status: (bilan.objectives && bilan.objectives.length > 0 && bilan.contractSigned) ? 'compliant' : 'non-compliant',
     evidence: [
       bilan.contractSigned ? 'Contrat signé' : 'Contrat non signé',
-      `Objectifs définis: ${bilan.objectives.length}`,
+      `Objectifs définis: ${bilan.objectives?.length || 0}`,
       `Date de début: ${bilan.startDate}`
     ]
   })
   
   indicators.push({
-    number: 2,
-    label: QUALIOPI_INDICATORS[2].label,
+    id: 2,
+    title: QUALIOPI_INDICATORS[2].title,
     description: QUALIOPI_INDICATORS[2].description,
-    status: bilan.progress > 0 ? 'compliant' : 'non_compliant',
+    status: bilan.progress > 0 ? 'compliant' : 'non-compliant',
     evidence: [
       `Progression: ${bilan.progress}%`,
-      `Heures réalisées: ${bilan.hoursCompleted}/${bilan.totalHours}`,
+      `Heures réalisées: ${bilan.completedHours}/${bilan.totalHours}`,
       `Phase: ${bilan.phase}`
     ]
   })
   
   const totalSessionHours = sessions.reduce((sum, s) => sum + s.duration, 0)
   const minRequiredHours = 24
+  const completedSessions = sessions.filter(s => s.status === 'completed')
   
   indicators.push({
-    number: 22,
-    label: QUALIOPI_INDICATORS[22].label,
+    id: 22,
+    title: QUALIOPI_INDICATORS[22].title,
     description: QUALIOPI_INDICATORS[22].description,
-    status: totalSessionHours >= minRequiredHours && sessions.every(s => s.completed) ? 'compliant' : 'partial',
+    status: totalSessionHours >= minRequiredHours && sessions.every(s => s.status === 'completed') ? 'compliant' : 'partial',
     evidence: [
       `Sessions programmées: ${sessions.length}`,
-      `Heures totales: ${totalSessionHours}h (minimum 24h requis)`,
-      `Sessions complétées: ${sessions.filter(s => s.completed).length}/${sessions.length}`,
-      `Assiduité confirmée: ${sessions.filter(s => s.attendanceConfirmed).length}/${sessions.length}`
+      `Heures totales: ${totalSessionHours}h (minimum ${minRequiredHours}h requis)`,
+      `Sessions complétées: ${completedSessions.length}/${sessions.length}`,
+      `Traçabilité assurée pour ${sessions.length} sessions`
     ]
   })
   
   indicators.push({
-    number: 11,
-    label: QUALIOPI_INDICATORS[11].label,
+    id: 11,
+    title: QUALIOPI_INDICATORS[11].title,
     description: QUALIOPI_INDICATORS[11].description,
-    status: satisfactionCollected && hasSynthesisDocument ? 'compliant' : 'non_compliant',
+    status: satisfactionCollected && hasSynthesisDocument ? 'compliant' : 'non-compliant',
     evidence: [
       satisfactionCollected ? 'Enquête de satisfaction complétée' : 'Enquête en attente',
       hasSynthesisDocument ? 'Document de synthèse généré' : 'Document en attente',
@@ -104,10 +111,10 @@ export function evaluateBilanCompliance(
   })
   
   indicators.push({
-    number: 23,
-    label: QUALIOPI_INDICATORS[23].label,
+    id: 23,
+    title: QUALIOPI_INDICATORS[23].title,
     description: QUALIOPI_INDICATORS[23].description,
-    status: satisfactionCollected ? 'compliant' : 'non_compliant',
+    status: satisfactionCollected ? 'compliant' : 'non-compliant',
     evidence: [
       satisfactionCollected ? 'Satisfaction recueillie' : 'En attente',
       `Bénéficiaire: ${bilan.beneficiaryName}`

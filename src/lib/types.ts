@@ -1,22 +1,9 @@
 export type BilanPhase = 'preliminary' | 'investigation' | 'conclusion'
-export type BilanStatus = 'pending' | 'active' | 'completed' | 'archived'
-export type UserRole = 'consultant' | 'beneficiary' | 'admin'
-export type ContractType = 'CDI' | 'CDD' | 'Interim' | 'Alternance' | 'Stage'
-export type SkillLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert'
-export type SkillFrequency = 'daily' | 'weekly' | 'monthly' | 'rarely'
-export type SkillPreference = 'love' | 'neutral' | 'dislike'
+export type BilanStatus = 'active' | 'completed' | 'archived'
 export type SessionFormat = 'visio' | 'presentiel' | 'telephone'
-
-export interface User {
-  id: string
-  role: UserRole
-  firstName: string
-  lastName: string
-  email: string
-  phone?: string
-  organization?: string
-  createdAt: string
-}
+export type SkillLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert'
+export type SkillFrequency = 'rarely' | 'sometimes' | 'often' | 'daily'
+export type SkillPreference = 'dislike' | 'neutral' | 'like'
 
 export interface Bilan {
   id: string
@@ -24,83 +11,43 @@ export interface Bilan {
   beneficiaryName: string
   consultantId: string
   consultantName: string
-  organizationId?: string
   phase: BilanPhase
   status: BilanStatus
   progress: number
   startDate: string
   endDate?: string
   nextSession?: string
-  objectives: string[]
-  contractSigned: boolean
-  contractSignedDate?: string
-  hoursCompleted: number
   totalHours: number
-  qualiopi: {
-    informed: boolean
-    satisfactionCollected: boolean
-    resultsTracked: boolean
-    documentsArchived: boolean
-  }
+  completedHours: number
+  createdAt: string
+  updatedAt: string
+  objectives?: string[]
+  contractSigned?: boolean
 }
 
 export interface Skill {
   id: string
   name: string
   category: string
-  description: string
-  romeCode?: string
   level: SkillLevel
   frequency: SkillFrequency
   preference: SkillPreference
-  context: 'professional' | 'personal' | 'training'
+  context: string
   yearsExperience?: number
-  transferable: boolean
-}
-
-export interface SkillAssessment {
-  bilanId: string
-  beneficiaryId: string
-  skills: Skill[]
-  completedAt?: string
-  consultantValidated: boolean
-  aiAnalysisCompleted: boolean
-}
-
-export interface CareerRecommendation {
-  id: string
-  bilanId: string
-  jobTitle: string
-  romeCode: string
-  matchScore: number
-  requiredSkills: string[]
-  skillGaps: string[]
-  salaryRange?: string
-  marketDemand: 'high' | 'medium' | 'low'
-  transitionDifficulty: 'easy' | 'moderate' | 'difficult'
-  trainingPath: string[]
-  estimatedDuration: string
-  generatedAt: string
+  isTransferable?: boolean
 }
 
 export interface Session {
   id: string
   bilanId: string
-  beneficiaryId: string
-  consultantId: string
   title: string
-  phase: BilanPhase
+  description: string
   date: string
-  startTime: string
-  endTime: string
   duration: number
   format: SessionFormat
-  location?: string
+  status: 'scheduled' | 'completed' | 'cancelled'
   notes?: string
-  objectives?: string[]
-  completed: boolean
-  attendanceConfirmed: boolean
-  documentUrl?: string
+  attendees: string[]
 }
 
 export interface Message {
@@ -108,54 +55,127 @@ export interface Message {
   bilanId: string
   senderId: string
   senderName: string
-  senderRole: UserRole
-  receiverId: string
+  senderRole: 'consultant' | 'beneficiary'
   content: string
   timestamp: string
   read: boolean
 }
 
-export interface SynthesisDocument {
+export interface CareerRecommendation {
+  id: string
+  jobTitle: string
+  romeCode: string
+  matchPercentage: number
+  requiredSkills: string[]
+  missingSkills: string[]
+  salaryRange: string
+  outlook: string
+  trainingPath?: string[]
+}
+
+export interface JobOpportunity {
+  id: string
+  title: string
+  company: string
+  location: string
+  contractType: string
+  salary?: string
+  romeCode: string
+  skills: string[]
+  description: string
+  postedDate: string
+  url?: string
+}
+
+export interface QualiopiIndicator {
+  id: number
+  title: string
+  description: string
+  status: 'compliant' | 'partial' | 'non-compliant'
+  evidence: string[]
+  lastAudit?: string
+}
+
+export interface SatisfactionSurvey {
+  id: string
   bilanId: string
   beneficiaryId: string
   consultantId: string
-  sections: {
-    presentation: string
-    professionalHistory: string
-    skillsMapping: string
-    motivationsValues: string
-    professionalProject: string
-    actionPlan: string
-    trainingRecommendations: string
+  submittedAt: string
+  ratings: {
+    clarity: number
+    listening: number
+    relevance: number
+    tools: number
+    recommendation: number
+    overall: number
   }
-  generatedAt: string
-  consultantReviewedAt?: string
-  beneficiaryReceivedAt?: string
-  digitalSignature?: string
-  qualiopi: {
-    compliant: boolean
-    indicators: string[]
+  feedback: {
+    strengths: string
+    improvements: string
+    nextSteps: string
+    testimonial?: string
   }
+  npsScore: number
+  consentTestimonial: boolean
+  consentDataUse: boolean
 }
 
-export interface ActionPlan {
-  bilanId: string
-  objectives: ActionPlanObjective[]
-  createdAt: string
-  updatedAt: string
-}
-
-export interface ActionPlanObjective {
+export interface AuditLog {
   id: string
+  timestamp: string
+  userId: string
+  action: string
+  resource: string
+  resourceId: string
+  details?: Record<string, unknown>
+}
+
+export interface OrganismeStats {
+  totalBilans: number
+  activeBilans: number
+  completedBilans: number
+  totalConsultants: number
+  averageSatisfaction: number
+  qualiopiCompliance: number
+  monthlyCompletions: number
+  averageDuration: number
+}
+
+export interface Consultant {
+  id: string
+  name: string
+  email: string
+  phone?: string
+  certifications: string[]
+  specialties: string[]
+  activeBilans: number
+  completedBilans: number
+  satisfaction: number
+  certified: boolean
+  joinedDate: string
+}
+
+export interface Beneficiary {
+  id: string
+  name: string
+  email: string
+  phone?: string
+  currentJob?: string
+  currentSector?: string
+  motivation: string
+  activeBilanId?: string
+  completedBilans: number
+  joinedDate: string
+}
+
+export interface ROMECode {
+  code: string
+  label: string
+  jobFamily: string
   description: string
-  specific: string
-  measurable: string
-  achievable: string
-  realistic: string
-  timebound: string
-  status: 'not_started' | 'in_progress' | 'completed'
-  priority: 'high' | 'medium' | 'low'
-  resources: string[]
+  requiredSkills: string[]
+  relatedCodes: string[]
 }
 
 export interface ROMEReference {
@@ -166,33 +186,31 @@ export interface ROMEReference {
   relatedCodes: string[]
 }
 
-export interface AuditLog {
+export interface SynthesisDocument {
+  bilanId: string
+  beneficiaryName: string
+  consultantName: string
+  generatedAt: string
+  sections: {
+    introduction: string
+    currentSituation: string
+    skillsAnalysis: string
+    motivations: string
+    careerRecommendations: string
+    actionPlan: string
+    conclusion: string
+  }
+  skills: Skill[]
+  recommendations: CareerRecommendation[]
+  nextSteps: ActionItem[]
+}
+
+export interface ActionItem {
   id: string
-  userId: string
-  userName: string
-  action: string
-  resource: string
-  resourceId: string
-  timestamp: string
-  ipAddress?: string
-  metadata?: Record<string, any>
-}
-
-export interface QualiopiIndicator {
-  number: number
-  label: string
+  title: string
   description: string
-  status: 'compliant' | 'partial' | 'non_compliant'
-  evidence: string[]
-  lastAuditDate?: string
-}
-
-export interface OrganizationStats {
-  totalBilans: number
-  activeBilans: number
-  completedBilans: number
-  totalConsultants: number
-  averageCompletionTime: number
-  satisfactionRate: number
-  qualiopiCompliance: number
+  deadline?: string
+  priority: 'low' | 'medium' | 'high'
+  status: 'todo' | 'in-progress' | 'completed'
+  category: 'formation' | 'recherche' | 'networking' | 'certification' | 'autre'
 }
