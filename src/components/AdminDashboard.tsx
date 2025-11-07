@@ -9,6 +9,8 @@ import { Progress } from './ui/progress'
 import { Separator } from './ui/separator'
 import { Avatar, AvatarFallback } from './ui/avatar'
 import QualiopiDashboard from './QualiopiDashboard'
+import BusinessAnalytics from './BusinessAnalytics'
+import CPFIntegration from './CPFIntegration'
 
 interface AdminDashboardProps {
   onLogout: () => void
@@ -160,7 +162,8 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
             <div className="flex items-center justify-between">
               <TabsList>
                 <TabsTrigger value="consultants">Consultants</TabsTrigger>
-                <TabsTrigger value="analytics">Analytiques</TabsTrigger>
+                <TabsTrigger value="analytics">Business Analytics</TabsTrigger>
+                <TabsTrigger value="cpf">CPF</TabsTrigger>
                 <TabsTrigger value="qualiopi">Qualiopi</TabsTrigger>
               </TabsList>
               <Button className="gap-2">
@@ -222,59 +225,11 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
             </TabsContent>
 
             <TabsContent value="analytics" className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Performance mensuelle</CardTitle>
-                    <CardDescription>Évolution des bilans réalisés</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Janvier 2025</span>
-                        <span className="font-semibold">12 bilans</span>
-                      </div>
-                      <Progress value={75} className="h-2" />
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Décembre 2024</span>
-                        <span className="font-semibold">15 bilans</span>
-                      </div>
-                      <Progress value={93} className="h-2" />
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-muted-foreground">Novembre 2024</span>
-                        <span className="font-semibold">8 bilans</span>
-                      </div>
-                      <Progress value={50} className="h-2" />
-                    </div>
-                  </CardContent>
-                </Card>
+              <BusinessAnalytics />
+            </TabsContent>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Taux de complétion</CardTitle>
-                    <CardDescription>Bilans terminés vs abandonnés</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-6">
-                      <div className="text-center">
-                        <div className="text-5xl font-bold text-primary mb-2">87%</div>
-                        <div className="text-sm text-muted-foreground">Taux de réussite</div>
-                      </div>
-                      <Separator />
-                      <div className="grid grid-cols-2 gap-4 text-center">
-                        <div>
-                          <div className="text-2xl font-semibold text-green-600">35</div>
-                          <div className="text-xs text-muted-foreground">Terminés</div>
-                        </div>
-                        <div>
-                          <div className="text-2xl font-semibold text-muted-foreground">5</div>
-                          <div className="text-xs text-muted-foreground">Abandonnés</div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+            <TabsContent value="cpf" className="space-y-6">
+              <CPFIntegration />
             </TabsContent>
 
             <TabsContent value="qualiopi" className="space-y-6">
