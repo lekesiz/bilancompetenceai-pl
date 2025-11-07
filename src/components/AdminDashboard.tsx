@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useKV } from '@github/spark/hooks'
-import { Brain, SignOut, Users, ChartBar, TrendUp, ShieldCheck, FileText, Plus } from '@phosphor-icons/react'
+import { Brain, SignOut, Users, ChartBar, TrendUp, ShieldCheck, Plus } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 import { Progress } from './ui/progress'
 import { Separator } from './ui/separator'
 import { Avatar, AvatarFallback } from './ui/avatar'
+import QualiopiDashboard from './QualiopiDashboard'
 
 interface AdminDashboardProps {
   onLogout: () => void
@@ -277,65 +278,7 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
             </TabsContent>
 
             <TabsContent value="qualiopi" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <ShieldCheck size={24} className="text-blue-600" weight="fill" />
-                    Indicateurs Qualiopi
-                  </CardTitle>
-                  <CardDescription>Conformité aux 7 critères - 32 indicateurs</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-1">
-                        <div className="font-medium">Indicateur 1: Information du public</div>
-                        <div className="text-sm text-muted-foreground">Transparence des prestations</div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Progress value={100} className="h-2 w-24" />
-                        <span className="text-green-600 font-semibold text-sm">100%</span>
-                      </div>
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-1">
-                        <div className="font-medium">Indicateur 11: Évaluation des acquis</div>
-                        <div className="text-sm text-muted-foreground">Satisfaction et résultats</div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Progress value={98} className="h-2 w-24" />
-                        <span className="text-green-600 font-semibold text-sm">98%</span>
-                      </div>
-                    </div>
-                    <Separator />
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-1">
-                        <div className="font-medium">Indicateur 22: Traçabilité</div>
-                        <div className="text-sm text-muted-foreground">Documentation complète</div>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <Progress value={95} className="h-2 w-24" />
-                        <span className="text-green-600 font-semibold text-sm">95%</span>
-                      </div>
-                    </div>
-                  </div>
-                  <Separator />
-                  <div className="flex items-center justify-between bg-green-50 p-4 rounded-lg border border-green-200">
-                    <div className="flex items-center gap-3">
-                      <ShieldCheck size={32} className="text-green-600" weight="fill" />
-                      <div>
-                        <div className="font-semibold text-green-900">Conformité validée</div>
-                        <div className="text-sm text-green-700">Prêt pour audit Qualiopi</div>
-                      </div>
-                    </div>
-                    <Button variant="outline" className="gap-2">
-                      <FileText size={16} />
-                      Générer rapport
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <QualiopiDashboard organizationId="org-1" />
             </TabsContent>
           </Tabs>
         </section>

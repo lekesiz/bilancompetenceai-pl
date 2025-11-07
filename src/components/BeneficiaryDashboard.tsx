@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Brain, SignOut, Calendar, CheckCircle, Lightbulb, ChartBar, ArrowRight, BookOpen, User, Briefcase, ShieldCheck } from '@phosphor-icons/react'
+import { Brain, SignOut, Calendar, CheckCircle, Lightbulb, ChartBar, ArrowRight, BookOpen, User, Briefcase, ShieldCheck, Star } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
@@ -10,17 +10,47 @@ import { Separator } from './ui/separator'
 import SkillsAssessment from './SkillsAssessment'
 import FranceTravailIntegration from './FranceTravailIntegration'
 import RGPDDataExport from './RGPDDataExport'
+import SatisfactionSurvey from './SatisfactionSurvey'
 
 interface BeneficiaryDashboardProps {
   onLogout: () => void
 }
 
-type ViewType = 'dashboard' | 'assessment' | 'jobs' | 'rgpd'
+type ViewType = 'dashboard' | 'assessment' | 'jobs' | 'rgpd' | 'satisfaction'
 
 export default function BeneficiaryDashboard({ onLogout }: BeneficiaryDashboardProps) {
   const [currentView, setCurrentView] = useState<ViewType>('dashboard')
   const [completedPhases, setCompletedPhases] = useState<number>(1)
   const [progressPercentage] = useState(65)
+  const [showSatisfactionPrompt] = useState(false)
+
+  if (currentView === 'satisfaction') {
+    return (
+      <div className="min-h-screen bg-background">
+        <header className="bg-card border-b sticky top-0 z-10 shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" size="icon" onClick={() => setCurrentView('dashboard')}>
+                <ArrowRight size={20} className="rotate-180" />
+              </Button>
+              <div>
+                <h1 className="text-xl font-semibold text-foreground">Enquête de Satisfaction</h1>
+                <p className="text-sm text-muted-foreground">Votre avis compte</p>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+          <SatisfactionSurvey 
+            bilanId="bilan-001"
+            beneficiaryName="Sophie Martin"
+            consultantName="Dr. Claire Rousseau"
+            onComplete={() => setCurrentView('dashboard')}
+          />
+        </main>
+      </div>
+    )
+  }
 
   if (currentView === 'assessment') {
     return <SkillsAssessment onBack={() => setCurrentView('dashboard')} />
