@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Brain, SignOut, Calendar, CheckCircle, Lightbulb, ChartBar, ArrowRight, BookOpen, User, Briefcase, ShieldCheck, Star } from '@phosphor-icons/react'
+import { Brain, SignOut, Calendar, CheckCircle, Lightbulb, ChartBar, ArrowRight, BookOpen, User, Briefcase, ShieldCheck, Star, Question } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
@@ -11,6 +11,7 @@ import SkillsAssessment from './SkillsAssessment'
 import FranceTravailIntegration from './FranceTravailIntegration'
 import RGPDDataExport from './RGPDDataExport'
 import SatisfactionSurvey from './SatisfactionSurvey'
+import PlatformTour from './PlatformTour'
 
 interface BeneficiaryDashboardProps {
   onLogout: () => void
@@ -23,6 +24,7 @@ export default function BeneficiaryDashboard({ onLogout }: BeneficiaryDashboardP
   const [completedPhases, setCompletedPhases] = useState<number>(1)
   const [progressPercentage] = useState(65)
   const [showSatisfactionPrompt] = useState(false)
+  const [showTour, setShowTour] = useState(false)
 
   if (currentView === 'satisfaction') {
     return (
@@ -125,6 +127,14 @@ export default function BeneficiaryDashboard({ onLogout }: BeneficiaryDashboardP
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <Button 
+                variant="outline" 
+                size="icon"
+                onClick={() => setShowTour(true)}
+                title="Aide et visite guidée"
+              >
+                <Question size={20} />
+              </Button>
               <div className="text-right hidden sm:block">
                 <div className="text-sm font-medium text-foreground">Sophie Martin</div>
                 <div className="text-xs text-muted-foreground">Bénéficiaire</div>
@@ -468,6 +478,13 @@ export default function BeneficiaryDashboard({ onLogout }: BeneficiaryDashboardP
           </Tabs>
         </section>
       </main>
+      
+      {showTour && (
+        <PlatformTour 
+          onClose={() => setShowTour(false)} 
+          userRole="beneficiary" 
+        />
+      )}
     </div>
   )
 }

@@ -1,6 +1,8 @@
-import { Brain, UserCircle, Briefcase, ChartBar, Sparkle, ShieldCheck } from '@phosphor-icons/react'
+import { Brain, UserCircle, Briefcase, ChartBar, Sparkle, ShieldCheck, Check, Rocket, Building, Star, CalendarBlank } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
+import { Badge } from './ui/badge'
+import { Separator } from './ui/separator'
 import { UserRole } from '../App'
 
 interface LandingPageProps {
@@ -191,8 +193,188 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
           </div>
         </section>
 
-        <footer className="text-center text-sm text-muted-foreground pt-8 border-t">
-          <p>© 2025 BilanCompetence.AI - NETZ INFORMATIQUE • Plateforme SaaS de Bilans de Compétences</p>
+        <section className="space-y-8">
+          <div className="text-center space-y-3">
+            <h2 className="text-3xl font-semibold text-foreground">Offres et Tarifs</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Choisissez la formule adaptée à vos besoins. Sans engagement, résiliable à tout moment.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="flex items-center gap-2 mb-2">
+                  <Rocket size={24} className="text-primary" />
+                  <CardTitle className="text-xl">Starter</CardTitle>
+                </div>
+                <div className="mb-4">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-bold text-foreground">49€</span>
+                    <span className="text-muted-foreground">/mois</span>
+                  </div>
+                </div>
+                <CardDescription>Pour consultants indépendants débutants</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>Jusqu'à 10 bilans actifs</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>Fonctionnalités essentielles</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>Analyse IA des compétences</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>France Travail intégré</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>Support email</span>
+                  </li>
+                </ul>
+                <Button variant="outline" className="w-full" size="lg">
+                  Commencer
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-xl transition-shadow border-2 border-primary relative">
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                <Badge className="bg-primary text-primary-foreground">
+                  <Star size={14} weight="fill" className="mr-1" />
+                  Plus populaire
+                </Badge>
+              </div>
+              <CardHeader>
+                <div className="flex items-center gap-2 mb-2">
+                  <Briefcase size={24} className="text-primary" />
+                  <CardTitle className="text-xl">Professional</CardTitle>
+                </div>
+                <div className="mb-4">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-bold text-foreground">149€</span>
+                    <span className="text-muted-foreground">/mois</span>
+                  </div>
+                </div>
+                <CardDescription>Pour petits organismes et consultants expérimentés</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>Jusqu'à 50 bilans actifs</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>Toutes les fonctionnalités</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>Conformité Qualiopi complète</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>Branding personnalisé</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>Support prioritaire</span>
+                  </li>
+                </ul>
+                <Button className="w-full" size="lg">
+                  Essayer gratuitement
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-shadow">
+              <CardHeader>
+                <div className="flex items-center gap-2 mb-2">
+                  <Building size={24} className="text-secondary-foreground" />
+                  <CardTitle className="text-xl">Enterprise</CardTitle>
+                </div>
+                <div className="mb-4">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-4xl font-bold text-foreground">Sur devis</span>
+                  </div>
+                  <div className="text-sm text-muted-foreground">À partir de 499€/mois</div>
+                </div>
+                <CardDescription>Pour grands organismes de formation</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <ul className="space-y-3 text-sm">
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>Bilans illimités</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>API et intégrations avancées</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>SSO et sécurité renforcée</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>Analytics avancés</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <Check size={18} className="text-primary flex-shrink-0 mt-0.5" weight="bold" />
+                    <span>Support dédié + formation</span>
+                  </li>
+                </ul>
+                <Button variant="outline" className="w-full" size="lg">
+                  Nous contacter
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground">
+              💰 Revenus additionnels : Commission CPF (5-10%) • Services de formation • Modules complémentaires
+            </p>
+          </div>
+        </section>
+
+        <Separator className="my-8" />
+
+        <section className="bg-gradient-to-r from-primary/5 to-accent/5 rounded-xl p-8 text-center space-y-4">
+          <h3 className="text-2xl font-semibold text-foreground">Prêt à digitaliser vos bilans de compétences ?</h3>
+          <p className="text-muted-foreground max-w-2xl mx-auto">
+            Rejoignez les 15 organismes qui font déjà confiance à BilanCompetence.AI pour accompagner leurs bénéficiaires
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
+            <Button size="lg" className="gap-2">
+              <Sparkle size={20} weight="fill" />
+              Démarrer l'essai gratuit
+            </Button>
+            <Button size="lg" variant="outline" className="gap-2">
+              <CalendarBlank size={20} />
+              Demander une démo
+            </Button>
+          </div>
+        </section>
+
+        <footer className="text-center text-sm text-muted-foreground pt-8 border-t space-y-2">
+          <p className="font-medium text-foreground">BilanCompetence.AI - NETZ INFORMATIQUE</p>
+          <p>Plateforme SaaS de Bilans de Compétences • Certifiée Qualiopi • Conforme RGPD</p>
+          <div className="flex items-center justify-center gap-4 pt-2">
+            <a href="#" className="hover:text-primary transition-colors">Mentions légales</a>
+            <span>•</span>
+            <a href="#" className="hover:text-primary transition-colors">CGU</a>
+            <span>•</span>
+            <a href="#" className="hover:text-primary transition-colors">Politique de confidentialité</a>
+          </div>
+          <p className="text-xs pt-2">© 2025 Tous droits réservés</p>
         </footer>
       </div>
     </div>

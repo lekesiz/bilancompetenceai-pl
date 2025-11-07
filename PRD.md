@@ -203,6 +203,22 @@ Animations should feel purposeful and professional—subtle transitions that red
 
 ## Additional Features - Phase 2 Enhancements
 
+### Platform Tour System
+- **Functionality**: Interactive multi-step guided tour customized for each user role (consultant, beneficiary, admin)
+- **Purpose**: Accelerates user adoption by providing contextual walkthroughs of key features with real-world use cases
+- **Trigger**: Help button (?) in dashboard header or on first login
+- **Progression**: Step-by-step walkthrough (5-7 steps) → Feature highlights → Key benefits → Skip or navigate freely → Completion
+- **Success criteria**: Accessible from all dashboards, role-specific content, progress tracking, professional UX
+- **Status**: ✅ IMPLEMENTED - Complete tour system with consultant (5 steps), beneficiary (5 steps), and admin (5 steps) paths, progress indicator, keyboard navigation
+
+### Enhanced Landing Page with Pricing
+- **Functionality**: Professional landing page showcasing platform features, benefits, and transparent pricing tiers
+- **Purpose**: Supports the commercial strategy outlined in Cahier des Charges with clear value propositions
+- **Trigger**: Initial visit to platform or logout
+- **Progression**: Hero section → Feature highlights → Pricing comparison (Starter 49€, Professional 149€, Enterprise sur devis) → Market statistics → CTA
+- **Success criteria**: All 3 pricing tiers displayed, value props clear, mobile responsive, professional design
+- **Status**: ✅ IMPLEMENTED - Complete landing page with detailed pricing cards, feature comparison, market stats, CTAs, and footer
+
 ### Satisfaction Survey System
 - **Functionality**: RGPD-compliant multi-step satisfaction survey for beneficiaries post-bilan completion
 - **Purpose**: Fulfills Qualiopi Indicators 11, 23, and 25 requiring systematic satisfaction measurement and analysis
@@ -285,8 +301,8 @@ This platform directly implements the strategic vision outlined in the comprehen
 - ✅ Resource library with 15+ professional resources
 - ✅ Professional UI with shadcn components
 
-**Component Inventory** (18 major components):
-1. LandingPage - Marketing and role selection
+**Component Inventory** (19 major components):
+1. LandingPage - Marketing and role selection with pricing tiers
 2. ConsultantDashboard - Consultant workspace
 3. BeneficiaryDashboard - Beneficiary interface
 4. AdminDashboard - Organization management
@@ -303,7 +319,8 @@ This platform directly implements the strategic vision outlined in the comprehen
 15. ResourceLibrary - Professional resources
 16. BusinessAnalytics - Strategic business intelligence
 17. CPFIntegration - CPF financing management
-18. ErrorFallback - Error handling
+18. PlatformTour - Interactive guided tour (NEW)
+19. ErrorFallback - Error handling
 
 **Ready for Phase 3** (Future Roadmap from Cahier des Charges):
 - ⏳ Visioconférence intégrée for remote sessions

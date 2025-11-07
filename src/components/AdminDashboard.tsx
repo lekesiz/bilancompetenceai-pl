@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useKV } from '@github/spark/hooks'
-import { Brain, SignOut, Users, ChartBar, TrendUp, ShieldCheck, Plus } from '@phosphor-icons/react'
+import { Brain, SignOut, Users, ChartBar, TrendUp, ShieldCheck, Plus, Question } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback } from './ui/avatar'
 import QualiopiDashboard from './QualiopiDashboard'
 import BusinessAnalytics from './BusinessAnalytics'
 import CPFIntegration from './CPFIntegration'
+import PlatformTour from './PlatformTour'
 
 interface AdminDashboardProps {
   onLogout: () => void
@@ -36,6 +37,8 @@ interface OrganismeStats {
 }
 
 export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
+  const [showTour, setShowTour] = useState(false)
+  
   const [consultants] = useKV<Consultant[]>('admin-consultants', [
     {
       id: '1',
@@ -90,6 +93,14 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <Button 
+                variant="outline" 
+                size="icon"
+                onClick={() => setShowTour(true)}
+                title="Aide et visite guidée"
+              >
+                <Question size={20} />
+              </Button>
               <div className="text-right hidden sm:block">
                 <div className="text-sm font-medium text-foreground">Centre de Formation Pro</div>
                 <div className="text-xs text-muted-foreground">Administrateur</div>
@@ -238,6 +249,13 @@ export default function AdminDashboard({ onLogout }: AdminDashboardProps) {
           </Tabs>
         </section>
       </main>
+      
+      {showTour && (
+        <PlatformTour 
+          onClose={() => setShowTour(false)} 
+          userRole="admin" 
+        />
+      )}
     </div>
   )
 }

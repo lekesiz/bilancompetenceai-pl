@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { useKV } from '@github/spark/hooks'
-import { Brain, SignOut, Plus, ClipboardText, ChartBar, Calendar, CheckCircle, Clock, User } from '@phosphor-icons/react'
+import { Brain, SignOut, Plus, ClipboardText, ChartBar, Calendar, CheckCircle, Clock, User, Question } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 import { Progress } from './ui/progress'
 import BilanDetailView from './BilanDetailView'
+import PlatformTour from './PlatformTour'
 
 interface ConsultantDashboardProps {
   onLogout: () => void
@@ -54,6 +55,7 @@ export default function ConsultantDashboard({ onLogout }: ConsultantDashboardPro
   ])
 
   const [selectedBilan, setSelectedBilan] = useState<string | null>(null)
+  const [showTour, setShowTour] = useState(false)
 
   if (selectedBilan) {
     const bilan = (bilans || []).find(b => b.id === selectedBilan)
@@ -98,6 +100,14 @@ export default function ConsultantDashboard({ onLogout }: ConsultantDashboardPro
               </div>
             </div>
             <div className="flex items-center gap-3">
+              <Button 
+                variant="outline" 
+                size="icon"
+                onClick={() => setShowTour(true)}
+                title="Aide et visite guidée"
+              >
+                <Question size={20} />
+              </Button>
               <div className="text-right hidden sm:block">
                 <div className="text-sm font-medium text-foreground">Dr. Claire Rousseau</div>
                 <div className="text-xs text-muted-foreground">Consultante certifiée</div>
@@ -244,6 +254,13 @@ export default function ConsultantDashboard({ onLogout }: ConsultantDashboardPro
           </Tabs>
         </section>
       </main>
+      
+      {showTour && (
+        <PlatformTour 
+          onClose={() => setShowTour(false)} 
+          userRole="consultant" 
+        />
+      )}
     </div>
   )
 }
