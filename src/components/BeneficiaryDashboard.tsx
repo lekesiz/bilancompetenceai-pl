@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Brain, SignOut, Calendar, CheckCircle, Lightbulb, ChartBar, ArrowRight, BookOpen, User } from '@phosphor-icons/react'
+import { Brain, SignOut, Calendar, CheckCircle, Lightbulb, ChartBar, ArrowRight, BookOpen, User, Briefcase, ShieldCheck } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
@@ -8,18 +8,76 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 import { Alert, AlertDescription, AlertTitle } from './ui/alert'
 import { Separator } from './ui/separator'
 import SkillsAssessment from './SkillsAssessment'
+import FranceTravailIntegration from './FranceTravailIntegration'
+import RGPDDataExport from './RGPDDataExport'
 
 interface BeneficiaryDashboardProps {
   onLogout: () => void
 }
 
+type ViewType = 'dashboard' | 'assessment' | 'jobs' | 'rgpd'
+
 export default function BeneficiaryDashboard({ onLogout }: BeneficiaryDashboardProps) {
-  const [currentView, setCurrentView] = useState<'dashboard' | 'assessment'>('dashboard')
+  const [currentView, setCurrentView] = useState<ViewType>('dashboard')
   const [completedPhases, setCompletedPhases] = useState<number>(1)
   const [progressPercentage] = useState(65)
 
   if (currentView === 'assessment') {
     return <SkillsAssessment onBack={() => setCurrentView('dashboard')} />
+  }
+
+  if (currentView === 'jobs') {
+    return (
+      <div className="min-h-screen bg-background">
+        <header className="bg-card border-b sticky top-0 z-10 shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" size="icon" onClick={() => setCurrentView('dashboard')}>
+                <ArrowRight size={20} className="rotate-180" />
+              </Button>
+              <div>
+                <h1 className="text-xl font-semibold text-foreground">Opportunités d'Emploi</h1>
+                <p className="text-sm text-muted-foreground">Intégration France Travail</p>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
+          <FranceTravailIntegration 
+            userSkills={['Gestion de projet', 'Communication', 'Analyse de données', 'Formation']}
+            targetJob="Chef de projet"
+            region="Île-de-France"
+          />
+        </main>
+      </div>
+    )
+  }
+
+  if (currentView === 'rgpd') {
+    return (
+      <div className="min-h-screen bg-background">
+        <header className="bg-card border-b sticky top-0 z-10 shadow-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+            <div className="flex items-center gap-3">
+              <Button variant="ghost" size="icon" onClick={() => setCurrentView('dashboard')}>
+                <ArrowRight size={20} className="rotate-180" />
+              </Button>
+              <div>
+                <h1 className="text-xl font-semibold text-foreground">Mes Données Personnelles</h1>
+                <p className="text-sm text-muted-foreground">Protection RGPD</p>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+          <RGPDDataExport 
+            userId="beneficiary-001"
+            userName="Sophie Martin"
+            userEmail="sophie.martin@example.fr"
+          />
+        </main>
+      </div>
+    )
   }
 
   return (
@@ -293,6 +351,54 @@ export default function BeneficiaryDashboard({ onLogout }: BeneficiaryDashboardP
             </TabsContent>
 
             <TabsContent value="resources" className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <Card className="hover:shadow-md transition-shadow cursor-pointer border-primary/30" onClick={() => setCurrentView('jobs')}>
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <Briefcase size={24} className="text-primary" />
+                      </div>
+                      <div>
+                        <CardTitle className="text-base">Opportunités d'Emploi</CardTitle>
+                        <CardDescription className="text-xs">France Travail</CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Découvrez des offres d'emploi correspondant à votre profil
+                    </p>
+                    <Button variant="outline" size="sm" className="w-full gap-2">
+                      <ArrowRight size={16} />
+                      Rechercher des offres
+                    </Button>
+                  </CardContent>
+                </Card>
+
+                <Card className="hover:shadow-md transition-shadow cursor-pointer border-primary/30" onClick={() => setCurrentView('rgpd')}>
+                  <CardHeader>
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <ShieldCheck size={24} className="text-primary" />
+                      </div>
+                      <div>
+                        <CardTitle className="text-base">Mes Données</CardTitle>
+                        <CardDescription className="text-xs">Protection RGPD</CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground mb-3">
+                      Exportez ou supprimez vos données personnelles
+                    </p>
+                    <Button variant="outline" size="sm" className="w-full gap-2">
+                      <ArrowRight size={16} />
+                      Gérer mes données
+                    </Button>
+                  </CardContent>
+                </Card>
+              </div>
+
               <Card>
                 <CardHeader>
                   <CardTitle>Ressources recommandées</CardTitle>

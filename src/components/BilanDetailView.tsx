@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ArrowLeft, Brain, Lightbulb, BookOpen, Briefcase, CheckCircle, Sparkle } from '@phosphor-icons/react'
+import { ArrowLeft, Brain, Lightbulb, BookOpen, Briefcase, CheckCircle, Sparkle, FilePdf } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Badge } from './ui/badge'
@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs'
 import { Slider } from './ui/slider'
 import { Separator } from './ui/separator'
 import { Alert, AlertDescription, AlertTitle } from './ui/alert'
+import SynthesisGenerator from './SynthesisGenerator'
 
 declare const spark: {
   llmPrompt: (strings: TemplateStringsArray, ...values: any[]) => string
@@ -46,6 +47,7 @@ interface AIRecommendation {
 }
 
 export default function BilanDetailView({ bilan, onBack }: BilanDetailViewProps) {
+  const [currentView, setCurrentView] = useState<'detail' | 'synthesis'>('detail')
   const [skills] = useState<Skill[]>([
     { name: 'Gestion de projet', category: 'Management', mastery: 85, frequency: 'daily', preference: 'love' },
     { name: 'Communication interpersonnelle', category: 'Soft Skills', mastery: 90, frequency: 'daily', preference: 'love' },
@@ -80,6 +82,14 @@ export default function BilanDetailView({ bilan, onBack }: BilanDetailViewProps)
 
   const [showAIInsights, setShowAIInsights] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
+
+  if (currentView === 'synthesis') {
+    return <SynthesisGenerator 
+      onBack={() => setCurrentView('detail')}
+      bilanId={bilan.id}
+      beneficiaryName={bilan.beneficiaryName}
+    />
+  }
 
   const generateAIInsights = async () => {
     setIsGenerating(true)
@@ -345,17 +355,20 @@ Retourne le résultat comme un objet JSON valide avec une seule propriété "rec
                     </div>
                     <Button variant="outline" size="sm">Éditer</Button>
                   </div>
-                  <div className="flex items-center justify-between p-3 bg-muted/50 rounded-lg opacity-60">
+                  <div className="flex items-center justify-between p-3 bg-primary/5 rounded-lg border border-primary/20">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded bg-muted flex items-center justify-center">
-                        <Briefcase size={20} className="text-muted-foreground" />
+                      <div className="w-10 h-10 rounded bg-primary/10 flex items-center justify-center">
+                        <FilePdf size={20} className="text-primary" />
                       </div>
                       <div>
                         <div className="font-medium text-sm">Document de synthèse</div>
-                        <div className="text-xs text-muted-foreground">Non généré</div>
+                        <div className="text-xs text-muted-foreground">Générateur IA disponible</div>
                       </div>
                     </div>
-                    <Button variant="ghost" size="sm" disabled>Générer</Button>
+                    <Button variant="default" size="sm" className="gap-2" onClick={() => setCurrentView('synthesis')}>
+                      <Sparkle size={16} weight="fill" />
+                      Générer
+                    </Button>
                   </div>
                 </div>
               </CardContent>

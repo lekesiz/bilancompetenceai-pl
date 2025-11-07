@@ -74,7 +74,23 @@ The MVP focuses on core workflows: consultant dashboard, beneficiary assessment 
 - **Trigger**: Consultant marks assessment complete and initiates report generation
 - **Progression**: Data aggregation → Template population → AI content enhancement → Consultant review/edit → PDF generation → Digital signature → Delivery to beneficiary
 - **Success criteria**: Complete report in <5 minutes, Qualiopi-compliant formatting, professional presentation
-- **Status**: 🔨 READY FOR IMPLEMENTATION - UI hooks in place, needs PDF generation logic
+- **Status**: ✅ IMPLEMENTED - Full synthesis generator with 7 sections, AI-powered content generation, editable fields, and export functionality
+
+### France Travail Job Matching
+- **Functionality**: Real-time job opportunity search integrating user skills with France Travail labor market data
+- **Purpose**: Connect beneficiaries with actual employment opportunities matching their competency profile
+- **Trigger**: User searches for jobs from resources section or views recommendations
+- **Progression**: Enter job type → Select region → AI matches skills to opportunities → View detailed job cards with compatibility scores → Explore individual opportunities
+- **Success criteria**: Relevant job matches (>75% compatibility), ROME code integration, regional filtering works
+- **Status**: ✅ IMPLEMENTED - AI-powered job generation with skills matching, salary ranges, ROME codes, and compatibility scoring
+
+### RGPD Data Management
+- **Functionality**: Complete data export and deletion system compliant with GDPR regulations
+- **Purpose**: Ensures legal compliance and user privacy rights (access, portability, erasure)
+- **Trigger**: User navigates to data management section from resources
+- **Progression**: View data categories → Export all data as JSON → Or request complete deletion with confirmation
+- **Success criteria**: Complete JSON export in <10s, deletion confirmation flow, RGPD compliance verified
+- **Status**: ✅ IMPLEMENTED - Full RGPD export with categorized data overview, JSON download, and deletion workflow with safety confirmations
 
 ## Edge Case Handling
 
