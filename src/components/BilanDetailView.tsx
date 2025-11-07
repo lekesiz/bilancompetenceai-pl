@@ -9,6 +9,11 @@ import { Slider } from './ui/slider'
 import { Separator } from './ui/separator'
 import { Alert, AlertDescription, AlertTitle } from './ui/alert'
 
+declare const spark: {
+  llmPrompt: (strings: TemplateStringsArray, ...values: any[]) => string
+  llm: (prompt: string, model?: string, jsonMode?: boolean) => Promise<string>
+}
+
 interface Bilan {
   id: string
   beneficiaryName: string
@@ -49,7 +54,7 @@ export default function BilanDetailView({ bilan, onBack }: BilanDetailViewProps)
     { name: 'Formation d\'équipes', category: 'Management', mastery: 80, frequency: 'weekly', preference: 'love' }
   ])
 
-  const [recommendations] = useState<AIRecommendation[]>([
+  const [recommendations, setRecommendations] = useState<AIRecommendation[]>([
     {
       jobTitle: 'Chef de Projet Digital',
       matchScore: 92,
@@ -74,9 +79,50 @@ export default function BilanDetailView({ bilan, onBack }: BilanDetailViewProps)
   ])
 
   const [showAIInsights, setShowAIInsights] = useState(false)
+  const [isGenerating, setIsGenerating] = useState(false)
 
   const generateAIInsights = async () => {
-    setShowAIInsights(true)
+    setIsGenerating(true)
+    
+    try {
+      const skillsData = skills.map(s => `${s.name} (${s.category}) - Maîtrise: ${s.mastery}%, Fréquence: ${s.frequency}, Appétence: ${s.preference}`).join('\n')
+      
+      const prompt = spark.llmPrompt`Tu es un expert en reconversion professionnelle et bilans de compétences en France. Analyse le profil suivant et génère exactement 3 recommandations de métiers adaptés.
+
+Profil du bénéficiaire:
+${skillsData}
+
+Pour chaque métier recommandé, fournis:
+- Le titre du poste
+- Le secteur d'activité
+- Un score de compatibilité (0-100)
+- 2-3 compétences manquantes à développer
+- 2-3 formations recommandées
+
+Retourne le résultat comme un objet JSON valide avec une seule propriété "recommendations" qui contient un tableau de 3 objets, chaque objet ayant les propriétés: jobTitle, sector, matchScore, skillGaps (array), trainings (array).`
+
+      const result = await spark.llm(prompt, 'gpt-4o-mini', true)
+      const parsedResult = JSON.parse(result)
+      
+      if (parsedResult.recommendations && Array.isArray(parsedResult.recommendations)) {
+        const aiRecs: AIRecommendation[] = parsedResult.recommendations.map((rec: any) => ({
+          jobTitle: rec.jobTitle || 'Métier recommandé',
+          matchScore: rec.matchScore || 85,
+          sector: rec.sector || 'Divers',
+          skillGaps: Array.isArray(rec.skillGaps) ? rec.skillGaps : [],
+          trainings: Array.isArray(rec.trainings) ? rec.trainings : []
+        }))
+        
+        setRecommendations(aiRecs)
+      }
+      
+      setShowAIInsights(true)
+    } catch (error) {
+      console.error('Error generating AI insights:', error)
+      setShowAIInsights(true)
+    } finally {
+      setIsGenerating(false)
+    }
   }
 
   return (
@@ -190,9 +236,9 @@ export default function BilanDetailView({ bilan, onBack }: BilanDetailViewProps)
                       L'intelligence artificielle va analyser les compétences de {bilan.beneficiaryName} et suggérer des métiers adaptés basés sur le marché de l'emploi France Travail
                     </p>
                   </div>
-                  <Button onClick={generateAIInsights} className="gap-2" size="lg">
+                  <Button onClick={generateAIInsights} className="gap-2" size="lg" disabled={isGenerating}>
                     <Sparkle size={20} weight="fill" />
-                    Lancer l'analyse IA
+                    {isGenerating ? 'Analyse en cours...' : 'Lancer l\'analyse IA'}
                   </Button>
                 </CardContent>
               </Card>

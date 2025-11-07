@@ -3,8 +3,9 @@ import { useKV } from '@github/spark/hooks'
 import LandingPage from './components/LandingPage'
 import ConsultantDashboard from './components/ConsultantDashboard'
 import BeneficiaryDashboard from './components/BeneficiaryDashboard'
+import AdminDashboard from './components/AdminDashboard'
 
-export type UserRole = 'consultant' | 'beneficiary' | null
+export type UserRole = 'consultant' | 'beneficiary' | 'admin' | null
 
 function App() {
   const [currentUser, setCurrentUser] = useKV<UserRole>('currentUser', null)
@@ -30,6 +31,10 @@ function App() {
 
   if (currentUser === 'beneficiary') {
     return <BeneficiaryDashboard onLogout={handleLogout} />
+  }
+
+  if (currentUser === 'admin') {
+    return <AdminDashboard onLogout={handleLogout} />
   }
 
   return null

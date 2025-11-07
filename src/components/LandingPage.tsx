@@ -1,4 +1,4 @@
-import { Brain, UserCircle, Briefcase, ChartBar, Sparkle } from '@phosphor-icons/react'
+import { Brain, UserCircle, Briefcase, ChartBar, Sparkle, ShieldCheck } from '@phosphor-icons/react'
 import { Button } from './ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { UserRole } from '../App'
@@ -73,7 +73,7 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
             <p className="text-muted-foreground">Choisissez votre rôle pour commencer</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             <Card className="hover:shadow-xl transition-all hover:-translate-y-1">
               <CardHeader className="space-y-4">
                 <div className="w-16 h-16 rounded-xl bg-primary/10 flex items-center justify-center mx-auto">
@@ -113,6 +113,28 @@ export default function LandingPage({ onLogin }: LandingPageProps) {
                   size="lg"
                 >
                   Accéder comme bénéficiaire
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-xl transition-all hover:-translate-y-1">
+              <CardHeader className="space-y-4">
+                <div className="w-16 h-16 rounded-xl bg-blue-500/10 flex items-center justify-center mx-auto">
+                  <ShieldCheck size={36} className="text-blue-600" weight="duotone" />
+                </div>
+                <CardTitle className="text-xl">Administrateur</CardTitle>
+                <CardDescription className="text-base">
+                  Gérez votre organisme, consultants et conformité Qualiopi
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button 
+                  onClick={() => onLogin('admin')} 
+                  variant="outline"
+                  className="w-full border-2"
+                  size="lg"
+                >
+                  Accéder comme admin
                 </Button>
               </CardContent>
             </Card>

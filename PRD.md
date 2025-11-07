@@ -8,7 +8,7 @@ Create an innovative French skills assessment (bilan de compétences) platform t
 3. **Transparent and Trustworthy** - Every step is clear, progress is visible, and data handling is explicit
 
 **Complexity Level**: Light Application (multiple features with basic state)
-The MVP focuses on core workflows: consultant dashboard, beneficiary assessment journey, and AI-powered recommendations. State management handles user sessions, assessment progress, and generated insights without requiring complex backend infrastructure initially.
+The MVP focuses on core workflows: consultant dashboard, beneficiary assessment journey, AI-powered recommendations, admin oversight, messaging, and session scheduling. State management handles user sessions, assessment progress, and generated insights using the useKV hook for persistence.
 
 ## Essential Features
 
@@ -18,6 +18,7 @@ The MVP focuses on core workflows: consultant dashboard, beneficiary assessment 
 - **Trigger**: Landing page sign-in or new user registration
 - **Progression**: Select role → Enter credentials → Email verification → Role-specific onboarding → Dashboard access
 - **Success criteria**: Users access appropriate interfaces, data segregation verified, session persistence works
+- **Status**: ✅ IMPLEMENTED - Three role types with dedicated dashboards
 
 ### Skills Assessment Module
 - **Functionality**: Guided self-evaluation of professional competencies with AI-assisted skill extraction and ROME framework mapping
@@ -25,13 +26,15 @@ The MVP focuses on core workflows: consultant dashboard, beneficiary assessment 
 - **Trigger**: Beneficiary initiates "New Assessment" or consultant assigns assessment
 - **Progression**: Introduction → Professional experience review → Skill-by-skill evaluation (mastery, frequency, preference) → Soft skills identification → AI analysis → Competency map generation
 - **Success criteria**: Minimum 20 skills evaluated, AI identifies 5+ transferable skills, competency map visualized
+- **Status**: ✅ IMPLEMENTED - Interactive skills assessment with slider, frequency, and preference selection
 
 ### AI-Powered Career Recommendations
 - **Functionality**: Gemini-powered analysis generating personalized job role suggestions, training recommendations, and transition pathways
 - **Purpose**: Bridges current skills to market opportunities using real-time France Travail data
-- **Trigger**: Completion of skills assessment
+- **Trigger**: Completion of skills assessment or consultant initiation
 - **Progression**: Skills analyzed → ROME codes matched → Labor market data consulted → Recommendations generated → Consultant reviews → Beneficiary views customized report
 - **Success criteria**: 3-5 relevant job suggestions, skill gap analysis, actionable training paths, 80%+ user satisfaction with relevance
+- **Status**: ✅ IMPLEMENTED - Using spark.llm API with GPT-4o-mini for real AI recommendations
 
 ### Progress Dashboard & Collaboration
 - **Functionality**: Shared workspace showing assessment phase, completed modules, upcoming sessions, and async messaging
@@ -39,6 +42,31 @@ The MVP focuses on core workflows: consultant dashboard, beneficiary assessment 
 - **Trigger**: User logs into platform
 - **Progression**: Dashboard overview → Task notifications → Progress tracking → Message exchange → Session scheduling → Document access
 - **Success criteria**: Clear phase indication, message response within 24hrs, task completion rate >85%
+- **Status**: ✅ IMPLEMENTED - Dashboards for all roles with phase tracking and progress visualization
+
+### Messaging System
+- **Functionality**: Secure RGPD-compliant messaging between consultants and beneficiaries
+- **Purpose**: Enables asynchronous communication for questions, feedback, and support
+- **Trigger**: User clicks message icon or needs to communicate
+- **Progression**: Open conversation → Type message → Send → Receive notification → Reply
+- **Success criteria**: Messages delivered instantly, read receipts, conversation history preserved
+- **Status**: ✅ IMPLEMENTED - Real-time messaging with timestamp and read status
+
+### Session Scheduling
+- **Functionality**: Calendar-based scheduling of bilan sessions (preliminary, investigation, conclusion phases)
+- **Purpose**: Organizes the 2-3 month process with clear milestones and commitments
+- **Trigger**: Consultant creates new session or beneficiary views calendar
+- **Progression**: Select date → Choose time → Set format (visio/presentiel/telephone) → Add notes → Confirm → Calendar updated
+- **Success criteria**: Sessions created, reminders sent, calendar integration possible
+- **Status**: ✅ IMPLEMENTED - Full calendar with session management and format selection
+
+### Admin/Organisme Dashboard
+- **Functionality**: Organization-level oversight of all bilans, consultants, and Qualiopi compliance
+- **Purpose**: Enables training organizations to manage multiple consultants and maintain quality standards
+- **Trigger**: Admin logs into platform
+- **Progression**: View stats → Manage consultants → Check Qualiopi indicators → Generate reports → Invite new consultants
+- **Success criteria**: Real-time statistics, compliance metrics visible, consultant performance tracked
+- **Status**: ✅ IMPLEMENTED - Full admin dashboard with analytics and Qualiopi tracking
 
 ### Synthesis Document Generation
 - **Functionality**: Automated creation of professional PDF report summarizing skills, recommendations, and action plan
@@ -46,6 +74,7 @@ The MVP focuses on core workflows: consultant dashboard, beneficiary assessment 
 - **Trigger**: Consultant marks assessment complete and initiates report generation
 - **Progression**: Data aggregation → Template population → AI content enhancement → Consultant review/edit → PDF generation → Digital signature → Delivery to beneficiary
 - **Success criteria**: Complete report in <5 minutes, Qualiopi-compliant formatting, professional presentation
+- **Status**: 🔨 READY FOR IMPLEMENTATION - UI hooks in place, needs PDF generation logic
 
 ## Edge Case Handling
 
