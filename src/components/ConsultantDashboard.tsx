@@ -100,51 +100,50 @@ export default function ConsultantDashboard({ onLogout }: ConsultantDashboardPro
               </div>
             </div>
             <div className="flex items-center gap-3">
-                size="icon"
-                onClick={() => setShowTour(true)}
-                size="icon"ée"
-                onClick={() => setShowTour(true)}
+              <Button variant="ghost" size="icon" onClick={() => setShowTour(true)}>
                 <Question size={20} />
-              >
-                <Question size={20} />
+              </Button>
+              <div className="text-right">
                 <div className="text-sm font-medium text-foreground">Dr. Claire Rousseau</div>
+                <div className="text-xs text-muted-foreground">Consultante certifiée</div>
               </div>
               <Button variant="ghost" size="icon" onClick={onLogout}>
-                <div className="text-xs text-muted-foreground">Consultante certifiée</div>
-              </Button>
-          </div>
-        </div>
+                <SignOut size={20} />
               </Button>
             </div>
           </div>
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 space-y-8">
         <section className="grid md:grid-cols-4 gap-6">
           <Card>
             <CardHeader className="pb-3">
               <CardDescription>Bilans actifs</CardDescription>
-        <section className="grid md:grid-cols-4 gap-6">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardDescription>Bilans actifs</CardDescription>text-muted-foreground">
               <CardTitle className="text-3xl font-bold">{activeBilans.length}</CardTitle>
-                <span>En cours</span>
+            </CardHeader>
             <CardContent>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <Clock size={16} />
+                <span>En cours</span>
+              </div>
             </CardContent>
           </Card>
-                <span>En cours</span>
+
           <Card>
             <CardHeader className="pb-3">
-          </Card>
-              <CardTitle className="text-3xl font-bold">8</CardTitle>
-          <Card>
-            <CardContent>
               <CardDescription>Séances cette semaine</CardDescription>
               <CardTitle className="text-3xl font-bold">8</CardTitle>
-                <span>Planifiées</span>
+            </CardHeader>
             <CardContent>
-            </CardContent>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Calendar size={16} />
                 <span>Planifiées</span>
               </div>
+            </CardContent>
+          </Card>
+
+          <Card>
             <CardHeader className="pb-3">
               <CardDescription>Complétion moyenne</CardDescription>
               <CardTitle className="text-3xl font-bold">72%</CardTitle>
@@ -152,24 +151,30 @@ export default function ConsultantDashboard({ onLogout }: ConsultantDashboardPro
             <CardContent>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <ChartBar size={16} />
+                <span>Tous bilans</span>
+              </div>
+            </CardContent>
           </Card>
 
           <Card>
-                <ChartBar size={16} />
-                <span>Tous bilans</span>
+            <CardHeader className="pb-3">
+              <CardDescription>Satisfaction</CardDescription>
               <CardTitle className="text-3xl font-bold">94%</CardTitle>
-            </CardContent>
+            </CardHeader>
             <CardContent>
               <div className="flex items-center gap-2 text-sm text-accent-foreground">
                 <CheckCircle size={16} weight="fill" />
                 <span>Bénéficiaires</span>
-              <CardDescription>Satisfaction</CardDescription>
-              <CardTitle className="text-3xl font-bold">94%</CardTitle>
-            </CardHeader>
+              </div>
+            </CardContent>
+          </Card>
         </section>
 
         <section>
           <Tabs defaultValue="active" className="space-y-6">
+            <div className="flex items-center justify-between">
+              <TabsList>
+                <TabsTrigger value="active">Actifs</TabsTrigger>
                 <TabsTrigger value="completed">Terminés</TabsTrigger>
               </TabsList>
               <Button className="gap-2">
@@ -180,16 +185,6 @@ export default function ConsultantDashboard({ onLogout }: ConsultantDashboardPro
 
             <TabsContent value="active" className="space-y-4">
               {activeBilans.map(bilan => (
-                <Card key={bilan.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => setSelectedBilan(bilan.id)}>
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-1 flex-1">
-                        <div className="flex items-center gap-3">
-                          <CardTitle className="text-lg">{bilan.beneficiaryName}</CardTitle>
-                          <Badge className={getPhaseColor(bilan.phase)}>
-                            {getPhaseLabel(bilan.phase)}
-                          </Badge>
-                        </div>
                 <Card key={bilan.id} className="hover:shadow-md transition-shadow cursor-pointer" onClick={() => setSelectedBilan(bilan.id)}>
                   <CardHeader>
                     <div className="flex items-start justify-between">
@@ -213,22 +208,32 @@ export default function ConsultantDashboard({ onLogout }: ConsultantDashboardPro
                     <div className="flex items-center justify-between text-sm">
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <Calendar size={16} />
+                        <span>Prochaine séance : {bilan.nextSession ? new Date(bilan.nextSession).toLocaleDateString('fr-FR') : 'À planifier'}</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-primary">
+                        <ClipboardText size={16} />
+                        Voir détails
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
             </TabsContent>
 
             <TabsContent value="completed" className="space-y-4">
-                        <ClipboardText size={16} />
-                        Voir détails
+              {completedBilans.length === 0 ? (
+                <Card>
                   <CardContent className="py-12 text-center">
                     <CheckCircle size={48} className="text-muted-foreground mx-auto mb-4" weight="duotone" />
                     <p className="text-muted-foreground">Aucun bilan terminé pour le moment</p>
                   </CardContent>
                 </Card>
               ) : (
-ans.map(bilan => (
-            <TabsContent value="completed" className="space-y-4">
-              {completedBilans.length === 0 ? (
-                <Card>
-                  <CardContent className="py-12 text-center">
+                completedBilans.map(bilan => (
+                  <Card key={bilan.id} className="hover:shadow-md transition-shadow cursor-pointer">
+                    <CardHeader>
+                      <div className="flex items-center justify-between">
+                        <div>
                           <CardTitle>{bilan.beneficiaryName}</CardTitle>
                           <CardDescription>Terminé le {new Date(bilan.startDate).toLocaleDateString('fr-FR')}</CardDescription>
                         </div>
